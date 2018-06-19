@@ -1,10 +1,10 @@
 //Header for the functions used in the preProcessing phase
 #include <fstream>
-#include<string>
+#include <string>
 #include <vector>
 #include <iostream>
 #include "tinyutf8.h"
-#include <list>
+#include <sstream>
 
 typedef struct sTweet {
     int polarity;
