@@ -1,18 +1,19 @@
-#define TAMR 10
 #include "preProcessing.h"
 
-std::string removePonctuacion(std::string toClean){
-    char toRemove[TAMR] = {',', '.', '#', '*', ';', '%', '@','$'};
-    int posToRemove;
+utf8_string cleanTweet(utf8_string toClean){
+    std::vector <char> pontuacao = {'~', '-', ';', ')', '^', '=', '+', ']', '.', '/', '#' , '@', '*', '$', 'º'};
 
 
-    //Percorre o vetor de pontua��es a serem removidas
-    for(int i = 0; i <TAMR; i++){
-        //Enquanto encontrou caracter a ser removido, remove o mesmo da string
-        while((posToRemove = toClean.find(toRemove[i])) != -1){
-            toClean.erase(posToRemove, 1);
+    int indice, i = 0;
+
+    do{
+
+        while((indice = toClean.find(pontuacao[i])) != utf8_string::npos){
+            toClean.erase(indice);
         }
-    }
+        i++;
+
+    }while(i < pontuacao.size());
 
     return toClean;
 }

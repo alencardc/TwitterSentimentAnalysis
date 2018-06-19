@@ -3,7 +3,10 @@
 #include<string>
 #include <vector>
 #include <iostream>
+#include "tinyutf8.h"
 
 
 //Removes the ponctuacion of the given string
-std::string removePonctuacion(std::string toClean);
+utf8_string cleanTweet(utf8_string toClean);
+
+
