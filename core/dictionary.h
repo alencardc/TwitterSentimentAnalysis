@@ -2,16 +2,16 @@
 #include <iostream>
 #include <string>
 
-typedef struct tweetData{
+typedef struct wordData{
     int weight;
     int ocurrences;
     int score;
-}tweetData;
+}wordData;
 
 class Dictionary{
 private:
     int dictionarySize;
-    std::vector<tweetData> registers;
+    std::vector<wordData> registers;
 
 
 private:
@@ -20,9 +20,8 @@ private:
     void resizeDictionary();
 
 public:
-    void insertWord(std::string key);
-    void removeWord(std::string key);
-
-
+    void insertWord(wordData newWord);
+    void removeWord(wordData toRemove);
 
 };
+
