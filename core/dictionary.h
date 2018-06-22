@@ -1,27 +1,39 @@
 #include <vector>
 #include <iostream>
-#include <string>
+#include "tinyutf8.h"
+#include <list>
 
+//Stores the information about the given word
 typedef struct wordData{
+    utf8_string word;
     int weight;
-    int ocurrences;
-    int score;
+    int ocurrences; //Number of occurences
+    int score;  //Accumulated score
 }wordData;
 
 class Dictionary{
 private:
-    int dictionarySize;
-    std::vector<wordData> registers;
+    int maxSize = 0;    //Initialization will be altered
+    int currentSize = 0;    //Initialization will be altered
+    std::vector <wordData> table;   //Table that stores the registers
 
 
 private:
-    int hash(std::string key);
-    void setSize(int newSize);
+    //HASH E NÃO HUSH HUSH HUSH(pussycat dools) [Generates the place to where the word belongs]
+    int hash(utf8_string key);
+    //Change the size of the dictionary (maxsize), will be used in rehash
+    void setMaxSize(int newSize);
+    //Re-hash funcion
     void resizeDictionary();
+    //Returns a bool that indicates if the dictionary needs re-hash or not;
+    bool needReHash();
 
 public:
+    //Insert wordData
     void insertWord(wordData newWord);
-    void removeWord(wordData toRemove);
+    //Retrieve wordData
+    wordData retrieveWordData(utf8_string key);
+
 
 };
-
+//Endereçamento aberto, linear probing
