@@ -3,6 +3,7 @@
 #include <cmath>
 #define SEED 7
 #define MAXLENGHT 8
+#define TAXAMAXIMA 0.5
 
 //Acumulação polinomial
 int Dictionary::hash (utf8_string key){
