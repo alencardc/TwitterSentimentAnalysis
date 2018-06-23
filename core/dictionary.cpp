@@ -1,9 +1,19 @@
 #include "dictionary.h"
 #include <stdlib.h>
 #include <cmath>
+
 #define SEED 7
 #define MAXLENGHT 8
 #define TAXAMAXIMA 0.5
+#define EXTRASIZE 10
+#define INITSIZE 300
+
+//Constructor for dictionary
+Dictionary::Dictionary(){
+    currentSize = 0;                    //Set the current size to 0 and then resizes the
+    setMaxSize(nextPrime(INITSIZE));    //vector to INITSIZE.
+
+}
 
 //Acumulação polinomial
 int Dictionary::hash (utf8_string key){
@@ -19,7 +29,7 @@ int Dictionary::hash (utf8_string key){
 //CHanges max size
 void Dictionary::setMaxSize(int newSize){
     maxSize = newSize;
-    table.resize(newSize);  //This will be in the rehash function
+    table.resize(newSize);
 }
 
 //Insere uma palavra
@@ -62,4 +72,30 @@ bool Dictionary::needReHash(){
     else{
         return true;
     }
+}
+
+bool Dictionary::isPrime(int number){
+        for (int div = 2; div < number; div++){
+            if (!(number % div)){
+                return false;
+            }
+        }
+    return true;
+}
+
+int Dictionary::nextPrime(int actualNumber){
+    actualNumber++;
+    while(!isPrime(actualNumber)){
+        actualNumber++;
+    }
+
+    return actualNumber;
+}
+
+void Dictionary::resizeDictionary(){
+    int newSize;
+
+    newSize = nextPrime(maxSize + EXTRASIZE);
+
+    setMaxSize(newSize);
 }

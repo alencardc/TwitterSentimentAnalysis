@@ -7,14 +7,18 @@
 typedef struct wordData{
     utf8_string word;
     int weight;
-    int ocurrences; //Number of occurences
+    int occurrences; //Number of occurences
     int score;  //Accumulated score
+
+    wordData() :
+    word("a"), weight(0), occurrences(0), score(0) { }
+
 }wordData;
 
 class Dictionary{
 private:
-    int maxSize = 0;    //Initialization will be altered
-    int currentSize = 0;    //Initialization will be altered
+    int maxSize;
+    int currentSize;
     std::vector <wordData> table;   //Table that stores the registers
 
 
@@ -28,12 +32,16 @@ private:
     //Returns a bool that indicates if the dictionary needs re-hash or not;
     bool needReHash();
 
+    bool isPrime(int number);
+
+    int nextPrime(int actualNumber);
+
 public:
+    //Default constructor for dictionary
+    Dictionary();
     //Insert wordData
     void insertWord(wordData newWord);
     //Retrieve wordData
     wordData retrieveWordData(utf8_string key);
 
-
 };
-//Endereçamento aberto, linear probing
