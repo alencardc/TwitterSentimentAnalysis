@@ -1,0 +1,5 @@
+A fazer:
+-Endereçamento aberto - linear probing (acertar função de inserir) 
+- Checar se o dicionário necessita de re-hash 
+-Re-hash
+-Função que retorna worddata (necessita da inserção certa)
