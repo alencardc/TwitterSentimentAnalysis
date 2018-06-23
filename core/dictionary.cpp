@@ -49,3 +49,16 @@ wordData Dictionary::retrieveWordData(utf8_string key){
 
     return table[end];
 }
+
+bool Dictionary::needReHash(){
+    float ocupacao;
+
+    ocupacao = (float) currentSize / (float) maxSize;
+
+    if(ocupacao < TAXAMAXIMA){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
