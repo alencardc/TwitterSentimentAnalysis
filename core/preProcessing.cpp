@@ -20,7 +20,7 @@ utf8_string cleanTweet(utf8_string toClean){
 
 
 //Retorna um vetor de strings(utf8), contendo a blacklist
-std::vector<utf8_string> createBlacklist(std::string archiveName){
+std::vector<utf8_string> createBlacklist(std::string archiveName) {
     std::ifstream archive;
     std::vector<utf8_string> blackList;
 
@@ -29,8 +29,8 @@ std::vector<utf8_string> createBlacklist(std::string archiveName){
 
     archive.open(archiveName);
 
-    if(archive.is_open()){
-        while(getline(archive,stopWord,',')){   //Le tendo como separador a ','
+    if(archive.is_open()) {
+        while(getline(archive,stopWord,',')) {   //Le tendo como separador a ','
             toInsert = utf8_string(stopWord);   //Transforma em utf e insere no vetor
             blackList.push_back(toInsert);
             toInsert.clear();
@@ -38,9 +38,7 @@ std::vector<utf8_string> createBlacklist(std::string archiveName){
         archive.close();
         return blackList;
 
-
     }
-
 }
 
 Tweet createTweet(std::string line) {
@@ -48,12 +46,10 @@ Tweet createTweet(std::string line) {
     std::string temp;
     Tweet newTweet;
 
-
     getline(lineStream, temp, ',');
     newTweet.text = temp;
     getline(lineStream, temp, ',');
     newTweet.polarity = std::stoi(temp);
-
 
     return newTweet;
 

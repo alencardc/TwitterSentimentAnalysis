@@ -5,6 +5,7 @@
 #include <iostream>
 #include "tinyutf8.h"
 #include <sstream>
+#include <cstdio>
 
 typedef struct sTweet {
     int polarity;
