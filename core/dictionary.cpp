@@ -10,11 +10,7 @@
 #define INITSIZE 300
 
 //Constructor for dictionary
-<<<<<<< HEAD
 Dictionary::Dictionary() {
-=======
-Dictionary::Dictionary(){
->>>>>>> c50fc792990d5706e54575fccd71a86a958d138c
     currentSize = 0;                    //Set the current size to 0 and then resizes the
     setMaxSize(nextPrime(INITSIZE));    //vector to INITSIZE.
 
