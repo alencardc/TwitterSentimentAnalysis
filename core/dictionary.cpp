@@ -43,19 +43,19 @@ void Dictionary::setMaxSize(int newSize) {
 }
 
 //Insere uma palavra
-void Dictionary::insertWord(wordData newWord) {
+int Dictionary::insertWord(wordData newWord) {
     unsigned int key;
     unsigned int firstKey  = hash1(newWord.word);
     unsigned int secondKey = hash2(newWord.word);
     int j;
-
+    /*
     currentSize++;
     //N�o vai ser necess�rio quando fizermos a fun��o de re-hash, basta fazer o teste se é necessario
     //e coloca-la aqui
     if(currentSize > maxSize) {
         setMaxSize(currentSize);
     }
-
+    */
     // Get an empty position in the table
     do {
         key = (firstKey + j * secondKey) % maxSize;
@@ -63,10 +63,11 @@ void Dictionary::insertWord(wordData newWord) {
     } while (isEmpty(key) == false);
 
     table[key] = newWord;
+    return key;
 }
 //Retorna uma palavra
 wordData Dictionary::retrieveWordData(utf8_string word) {
-    unsigned int key;
+    int key;
     wordData emptyWord;
 
     key = find(word);
@@ -85,14 +86,17 @@ int Dictionary::find(utf8_string word) {
     unsigned int key;
     unsigned int firstKey  = hash1(word);
     unsigned int secondKey = hash2(word);
+    std::string wordBuff;
+    std::string wordCopy = word.c_str();
     int j = 0;
 
     do {    //Calculate key searching for the word
         key = (firstKey + j * secondKey) % maxSize;
-        j++;
-    } while (table[key].word != word && (key != firstKey || j == 0));
+        wordBuff = table[key].word.c_str();
+        j++; //Now it increments on while statement
+    } while ((wordBuff != wordCopy) && (key != firstKey || j-1 == 0));
 
-    if (table[key].word != word) //word isnt in the dictionary
+    if (wordBuff != wordCopy) //word isnt in the dictionary
         return -1;
 
     return key;

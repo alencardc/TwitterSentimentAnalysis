@@ -49,7 +49,7 @@ Tweet createTweet(std::string line) {
     getline(lineStream, temp, ',');
     newTweet.text = temp;
     getline(lineStream, temp, ',');
-    newTweet.polarity = std::stoi(temp);
+    newTweet.polarity = std::atoi(temp.c_str());
 
     return newTweet;
 

@@ -11,7 +11,7 @@ typedef struct wordData {
     int score;  //Accumulated score
 
     wordData() :
-    word("a"), weight(0), occurrences(0), score(0) { }
+    word(""), weight(0), occurrences(0), score(0) { }
 
 }wordData;
 
@@ -20,7 +20,6 @@ private:
     int maxSize;
     int currentSize;
     std::vector <wordData> table;   //Table that stores the registers
-
 
 private:
     //HASH E NÃO HUSH HUSH HUSH(pussycat dools) [Generates the place to where the word belongs]
@@ -43,7 +42,7 @@ public:
     //Default constructor for dictionary
     Dictionary();
     //Insert wordData
-    void insertWord(wordData newWord);
+    int insertWord(wordData newWord);
     //Retrieve wordData
     wordData retrieveWordData(utf8_string word);
     //Returns hash key for a given word
