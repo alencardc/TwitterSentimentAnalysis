@@ -10,13 +10,15 @@ typedef struct wordData {
     int occurrences; //Number of occurences
     int score;  //Accumulated score
 
-    wordData() : word(""), weight(0), occurrences(0), score(0) { }
-} wordData;
+    wordData() :
+    word("a"), weight(0), occurrences(0), score(0) { }
+
+}wordData;
 
 class Dictionary {
 private:
-    int maxSize = 0;    //Initialization will be altered
-    int currentSize = 0;    //Initialization will be altered
+    int maxSize;
+    int currentSize;
     std::vector <wordData> table;   //Table that stores the registers
 
 
@@ -37,6 +39,10 @@ private:
 
     int nextPrime(int actualN);
 
+    bool isPrime(int number);
+
+    int nextPrime(int actualNumber);
+
 public:
     //Default constructor for dictionary
     Dictionary();
@@ -48,4 +54,3 @@ public:
     int find(utf8_string word);
 
 };
-//Endereçamento aberto, linear probing

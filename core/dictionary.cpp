@@ -1,6 +1,7 @@
 #include "dictionary.h"
 #include <stdlib.h>
 #include <cmath>
+
 #define SEED 7
 #define SEED2 3
 #define MAXLENGHT 8
@@ -9,7 +10,11 @@
 #define INITSIZE 300
 
 //Constructor for dictionary
+<<<<<<< HEAD
 Dictionary::Dictionary() {
+=======
+Dictionary::Dictionary(){
+>>>>>>> c50fc792990d5706e54575fccd71a86a958d138c
     currentSize = 0;                    //Set the current size to 0 and then resizes the
     setMaxSize(nextPrime(INITSIZE));    //vector to INITSIZE.
 
@@ -38,7 +43,7 @@ int Dictionary::hash2 (utf8_string key) {
 //CHanges max size
 void Dictionary::setMaxSize(int newSize) {
     maxSize = newSize;
-    table.resize(newSize);  //This will be in the rehash function
+    table.resize(newSize);
 }
 
 //Insere uma palavra
@@ -114,4 +119,43 @@ int Dictionary::nextPrime(int actualNumber){
     }
 
     return actualNumber;
+}
+
+bool Dictionary::needReHash(){
+    float ocupacao;
+
+    ocupacao = (float) currentSize / (float) maxSize;
+
+    if(ocupacao < TAXAMAXIMA){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+bool Dictionary::isPrime(int number){
+        for (int div = 2; div < number; div++){
+            if (!(number % div)){
+                return false;
+            }
+        }
+    return true;
+}
+
+int Dictionary::nextPrime(int actualNumber){
+    actualNumber++;
+    while(!isPrime(actualNumber)){
+        actualNumber++;
+    }
+
+    return actualNumber;
+}
+
+void Dictionary::resizeDictionary(){
+    int newSize;
+
+    newSize = nextPrime(maxSize + EXTRASIZE);
+
+    setMaxSize(newSize);
 }
