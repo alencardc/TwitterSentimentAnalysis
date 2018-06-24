@@ -129,29 +129,3 @@ bool Dictionary::needReHash(){
         return true;
     }
 }
-
-bool Dictionary::isPrime(int number){
-        for (int div = 2; div < number; div++){
-            if (!(number % div)){
-                return false;
-            }
-        }
-    return true;
-}
-
-int Dictionary::nextPrime(int actualNumber){
-    actualNumber++;
-    while(!isPrime(actualNumber)){
-        actualNumber++;
-    }
-
-    return actualNumber;
-}
-
-void Dictionary::resizeDictionary(){
-    int newSize;
-
-    newSize = nextPrime(maxSize + EXTRASIZE);
-
-    setMaxSize(newSize);
-}

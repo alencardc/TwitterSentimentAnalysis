@@ -34,14 +34,10 @@ private:
     bool needReHash();
     //Returns true if a given hash key is empty in the table
     bool isEmpty(unsigned int key);
-    
+
     bool isPrime(int number);
 
     int nextPrime(int actualN);
-
-    bool isPrime(int number);
-
-    int nextPrime(int actualNumber);
 
 public:
     //Default constructor for dictionary
