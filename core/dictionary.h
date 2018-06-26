@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include "tinyutf8.h"
+#include "preProcessing.h"
 #include <list>
 
 //Stores the information about the given word

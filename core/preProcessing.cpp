@@ -55,12 +55,45 @@ Tweet createTweet(std::string line) {
 
 }
 
-
-
 Tweet readTweet(std::ifstream &file) {
     std::string line;
 
     std::getline(file,line);
 
     return createTweet(line);
+}
+
+wordData createWord(std::string word, int polarity) {
+    wordData newWord;
+    newWord.word        = utf8_string(word);
+    //Need changes
+    newWord.weight      = polarity;
+    newWord.occurrences = polarity;
+    newWord.score       = polarity;
+
+    return newWord;
+}
+
+void insertTweet(Tweet tweet) {
+    //transform(frase.begin(), frase.end(), frase.begin(), ::tolower);
+    std::string buffWord;
+    wordData word;
+    std::istringstream tweetStream(tweet.text.c_str());
+    while (getline(tweetStream, buffWord, ' ')) {
+        word = createWord(buffWord, tweet.polarity);
+        insertWord(word);
+    }
+}
+
+bool CSVtoDictionary(std::string fileName) {
+    std::string buffTweet;
+    Tweet tweet;
+    std::ifstream file;
+    file.open(fileName);
+    int j = 0;
+    while (/*file.eof() == false*/ j++<40) {
+        tweet = readTweet(file);
+        insertTweet(tweet);
+    }
+    return 1;
 }
