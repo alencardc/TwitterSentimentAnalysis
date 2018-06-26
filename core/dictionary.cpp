@@ -33,7 +33,7 @@ int Dictionary::hash2 (utf8_string key) {
     for(int i = 0; i < key.size() && i < MAXLENGHT; i++) {
         hashValue = (hashValue * SEED2) + key.at(i);
     }
-    return hashValue % maxSize;
+    return (hashValue % 7) + 1;
 }
 
 //CHanges max size
@@ -47,7 +47,7 @@ int Dictionary::insertWord(wordData newWord) {
     unsigned int key;
     unsigned int firstKey  = hash1(newWord.word);
     unsigned int secondKey = hash2(newWord.word);
-    int j;
+    int j = 0;
     /*
     currentSize++;
     //N�o vai ser necess�rio quando fizermos a fun��o de re-hash, basta fazer o teste se é necessario
@@ -131,5 +131,69 @@ bool Dictionary::needReHash(){
     }
     else{
         return true;
+    }
+}
+
+//Re-hash funcion
+void Dictionary::resizeDictionary(){
+    int newSize;
+
+    std::vector <STATUS> controle;
+
+    //Calcula novo tamanho e atualiza tamanho da tabela
+    newSize = maxSize + EXTRASIZE;
+    newSize = nextPrime(newSize);
+    setMaxSize(newSize);
+
+    controle.resize(newSize);
+    //Prepara vetor que realiza o controle das realocações
+    for(int i = 0; i < controle.size(); i++){
+        if (!isEmpty(i)){
+            controle[i].livre = false;
+            controle[i].ocupado = true;
+        }
+    }
+
+    //Realoca toda tabela. (se a posicao é livre a função já identifica isso e não faz nada)
+    //então não é necessario duplicar o teste aqui
+    for (int i = 0; i < maxSize; i++){
+        realocaPosicao(i,controle);
+    }
+}
+
+void Dictionary::realocaPosicao(int posicao, std::vector <STATUS>& controle){
+    utf8_string chave;
+    wordData buffer;
+    int returnedHash;
+
+    //Vê se há algo a ser realocado, se  não tem, retorna
+    if (controle[posicao].realocado == true || controle[posicao].livre == true)
+        return;
+    else{
+
+        buffer = table[posicao];    //Pega wordData da posicao a ser realocada;
+        returnedHash = hash1(buffer.word);  //Calcula nova posicao (incremento 0)
+        controle[posicao].livre = true;     //libera posicao
+
+        if(controle[returnedHash].livre == true){   //Se nova posicao é livre, insere
+            table[returnedHash] = buffer;
+            controle[returnedHash].livre = false;   //Muda os status
+            controle[returnedHash].ocupado = false;
+            controle[returnedHash].realocado = true;
+        }
+
+        else if(controle[returnedHash].ocupado == true){
+            realocaPosicao(returnedHash,controle);  //Se esta ocupado, realoca a posicao ocupada
+            realocaPosicao(posicao,controle);       //E tenta realocar a posicao atual (pode cair em um realocado)
+        }
+
+        else{   //Se chegou até aqui a posicao so pode estar realocada, então realiza uma até achar uma posição não realocada
+            int j = 1;
+            while(controle[returnedHash].realocado == true){
+                returnedHash = ( hash1(buffer.word) + (j * hash2(buffer.word)) ) % maxSize;
+            }
+            realocaPosicao(returnedHash,controle);  //Realoca posição achada(pode estar ocupada ou livre)
+            realocaPosicao(posicao, controle);      //Tenta inserir na posicao dada novamente
+        }
     }
 }
