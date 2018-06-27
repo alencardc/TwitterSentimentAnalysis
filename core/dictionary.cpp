@@ -33,7 +33,7 @@ int Dictionary::hash2 (utf8_string key) {
     for(int i = 0; i < key.size() && i < MAXLENGHT; i++) {
         hashValue = (hashValue * SEED2) + key.at(i);
     }
-    return (hashValue % 7) + 1;
+    return (hashValue % SEED) + 1;
 }
 
 //CHanges max size
@@ -48,14 +48,14 @@ int Dictionary::insertWord(wordData newWord) {
     unsigned int firstKey  = hash1(newWord.word);
     unsigned int secondKey = hash2(newWord.word);
     int j = 0;
-    /*
+
     currentSize++;
-    //N�o vai ser necess�rio quando fizermos a fun��o de re-hash, basta fazer o teste se é necessario
-    //e coloca-la aqui
-    if(currentSize > maxSize) {
-        setMaxSize(currentSize);
+
+    // Get an empty position in the table
+    if(needReHash()){
+        resizeDictionary();
     }
-    */
+
     // Get an empty position in the table
     do {
         key = (firstKey + j * secondKey) % maxSize;
@@ -157,6 +157,7 @@ void Dictionary::resizeDictionary(){
     //Realoca toda tabela. (se a posicao é livre a função já identifica isso e não faz nada)
     //então não é necessario duplicar o teste aqui
     for (int i = 0; i < maxSize; i++){
+        //std::cout << i << std::endl;
         realocaPosicao(i,controle);
     }
 }
@@ -165,16 +166,13 @@ void Dictionary::realocaPosicao(int posicao, std::vector <STATUS>& controle){
     utf8_string chave;
     wordData buffer;
     int returnedHash;
-
     //Vê se há algo a ser realocado, se  não tem, retorna
     if (controle[posicao].realocado == true || controle[posicao].livre == true)
         return;
     else{
-
         buffer = table[posicao];    //Pega wordData da posicao a ser realocada;
         returnedHash = hash1(buffer.word);  //Calcula nova posicao (incremento 0)
         controle[posicao].livre = true;     //libera posicao
-
         if(controle[returnedHash].livre == true){   //Se nova posicao é livre, insere
             table[returnedHash] = buffer;
             controle[returnedHash].livre = false;   //Muda os status
@@ -191,6 +189,7 @@ void Dictionary::realocaPosicao(int posicao, std::vector <STATUS>& controle){
             int j = 1;
             while(controle[returnedHash].realocado == true){
                 returnedHash = ( hash1(buffer.word) + (j * hash2(buffer.word)) ) % maxSize;
+                j++;
             }
             realocaPosicao(returnedHash,controle);  //Realoca posição achada(pode estar ocupada ou livre)
             realocaPosicao(posicao, controle);      //Tenta inserir na posicao dada novamente

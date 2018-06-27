@@ -82,7 +82,7 @@ void insertTweet(Dictionary &dictionary, Tweet tweet) {
     while (getline(tweetStream, buffWord, ' ')) {
         word = createWord(buffWord, tweet.polarity);
         dictionary.insertWord(word);
-        std::cout << word.word.c_str() << std::endl;
+        //std::cout << word.word.c_str() << std::endl;
     }
 }
 
@@ -92,7 +92,7 @@ bool CSVtoDictionary(Dictionary &dictionary, std::string fileName) {
     std::ifstream file;
     file.open(fileName);
     int j = 0;
-    while (/*file.eof() == false*/ j++<20) {
+    while (file.eof() == false) {
         tweet = readTweet(file);
         insertTweet(dictionary, tweet);
     }
