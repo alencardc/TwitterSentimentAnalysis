@@ -74,26 +74,27 @@ wordData createWord(std::string word, int polarity) {
     return newWord;
 }
 
-void insertTweet(Tweet tweet) {
+void insertTweet(Dictionary &dictionary, Tweet tweet) {
     //transform(frase.begin(), frase.end(), frase.begin(), ::tolower);
     std::string buffWord;
     wordData word;
     std::istringstream tweetStream(tweet.text.c_str());
     while (getline(tweetStream, buffWord, ' ')) {
         word = createWord(buffWord, tweet.polarity);
-        insertWord(word);
+        dictionary.insertWord(word);
+        std::cout << word.word.c_str() << std::endl;
     }
 }
 
-bool CSVtoDictionary(std::string fileName) {
+bool CSVtoDictionary(Dictionary &dictionary, std::string fileName) {
     std::string buffTweet;
     Tweet tweet;
     std::ifstream file;
     file.open(fileName);
     int j = 0;
-    while (/*file.eof() == false*/ j++<40) {
+    while (/*file.eof() == false*/ j++<20) {
         tweet = readTweet(file);
-        insertTweet(tweet);
+        insertTweet(dictionary, tweet);
     }
     return 1;
 }

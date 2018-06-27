@@ -6,6 +6,7 @@
 #include "tinyutf8.h"
 #include <sstream>
 #include <cstdio>
+#include "dictionary.h"
 
 typedef struct sTweet {
     int polarity;
@@ -27,10 +28,10 @@ Tweet readTweet(std::ifstream &file);
 Tweet createTweet(std::string line);
 
 //Insert all words of a CSV in the dictionary
-bool CSVtoDictionary (std::string fileName);
+bool CSVtoDictionary (Dictionary &dictionary, std::string fileName);
 
 //Insert words of a given tweet
-void insertTweet(Tweet tweet);
+void insertTweet(Dictionary &dictionary, Tweet tweet);
 
 //Create wordData struct
 wordData createWord(std::string word, int polarity);

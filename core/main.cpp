@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "dictionary.h"
-
+#include "preProcessing.h"
 
 
 
@@ -10,7 +9,7 @@ int main () {
     Dictionary dictionary;
     wordData word;
 
-    dictionary.CSVtoDictionary("pt.csv");
+    CSVtoDictionary(dictionary, "pt.csv");
 
 	return 0;
 }
