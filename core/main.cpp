@@ -5,7 +5,6 @@
 
 
 int main () {
-
     Dictionary dictionary;
     wordData word;
     Tweet tweet;
@@ -13,12 +12,17 @@ int main () {
     std::ifstream arq;
     std::string text;
     arq.open("pt.csv");
-    while (getline(arq, text)) {
-        createTweet(text);
-        //std::cout << cleanTweet(utf8_string(text)).c_str() << std::endl;
-    }
-    arq.close();
-    //CSVtoDictionary(dictionary, "pt.csv");
+
+
+    CSVtoDictionary(dictionary, "pt.csv");
+
+    word = dictionary.retrieveWordData("hoje");
+
+    std::cout << std::endl;
+
+    std::cout << "Ocurrences: " << word.occurrences <<std::endl;
+    std::cout << "Score: " << word.score << std::endl;
+    std::cout << "Weight: " << word.weight << std::endl;
 
 	return 0;
 }

@@ -6,12 +6,12 @@
 //Stores the information about the given word
 typedef struct wordData {
     utf8_string word;
-    int weight;
+    float weight;
     int occurrences; //Number of occurences
     int score;  //Accumulated score
 
     wordData() :
-    word(""), weight(0), occurrences(0), score(0) { }
+    word(""), weight(0.0), occurrences(0), score(0) { }
 
 } wordData;
 
