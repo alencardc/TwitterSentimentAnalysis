@@ -7,7 +7,7 @@
 #define MAXLENGHT 8
 #define TAXAMAXIMA 0.5
 #define EXTRASIZE 10
-#define INITSIZE 11
+#define INITSIZE 10
 
 //Constructor for dictionary
 Dictionary::Dictionary() {
@@ -21,8 +21,10 @@ int Dictionary::hash1 (utf8_string key) {
     unsigned int hashValue = 0;
 
     for(int i = 0; i < key.size() && i < MAXLENGHT; i++) {
+
         hashValue = (hashValue * SEED) + key.at(i);
     }
+
     return hashValue % maxSize;
 
 }
@@ -33,7 +35,7 @@ int Dictionary::hash2 (utf8_string key) {
     for(int i = 0; i < key.size() && i < MAXLENGHT; i++) {
         hashValue = (hashValue * SEED2) + key.at(i);
     }
-    return (hashValue % SEED) + 1;
+    return (hashValue % 7) + 1;
 }
 
 //CHanges max size
@@ -48,15 +50,20 @@ int Dictionary::insertWord(wordData newWord) {
     unsigned int firstKey  = hash1(newWord.word);
     unsigned int secondKey = hash2(newWord.word);
     int j = 0;
-
+    /*
     currentSize++;
-
+    //N�o vai ser necess�rio quando fizermos a fun��o de re-hash, basta fazer o teste se é necessario
+    //e coloca-la aqui
+    if(currentSize > maxSize) {
+        setMaxSize(currentSize);
+    }
+    */
+    currentSize++;
     // Get an empty position in the table
     if(needReHash()){
-        resizeDictionary();
+        reHash();
     }
 
-    // Get an empty position in the table
     do {
         key = (firstKey + j * secondKey) % maxSize;
         j++;
@@ -139,40 +146,70 @@ void Dictionary::resizeDictionary(){
     int newSize;
 
     std::vector <STATUS> controle;
+    int oldSize;
 
+    oldSize = maxSize;
     //Calcula novo tamanho e atualiza tamanho da tabela
     newSize = maxSize + EXTRASIZE;
     newSize = nextPrime(newSize);
     setMaxSize(newSize);
 
+
+
     controle.resize(newSize);
     //Prepara vetor que realiza o controle das realocações
     for(int i = 0; i < controle.size(); i++){
-        if (!isEmpty(i)){
+        if ( i < oldSize && !isEmpty(i)){
             controle[i].livre = false;
             controle[i].ocupado = true;
+            controle[i].realocado = false;
         }
+        else{
+            controle[i].livre = true;
+            controle[i].realocado = false;
+            controle[i].ocupado = false;
+        }
+
     }
 
     //Realoca toda tabela. (se a posicao é livre a função já identifica isso e não faz nada)
     //então não é necessario duplicar o teste aqui
-    for (int i = 0; i < maxSize; i++){
-        //std::cout << i << std::endl;
+    for (int i = 0; i < oldSize; i++){
         realocaPosicao(i,controle);
     }
+
+
 }
 
 void Dictionary::realocaPosicao(int posicao, std::vector <STATUS>& controle){
     utf8_string chave;
     wordData buffer;
     int returnedHash;
+
     //Vê se há algo a ser realocado, se  não tem, retorna
     if (controle[posicao].realocado == true || controle[posicao].livre == true)
         return;
     else{
+
+
+
         buffer = table[posicao];    //Pega wordData da posicao a ser realocada;
+
+
+
+
+
         returnedHash = hash1(buffer.word);  //Calcula nova posicao (incremento 0)
+
+
+
+
+
+
         controle[posicao].livre = true;     //libera posicao
+        controle[posicao].ocupado = false;
+        controle[posicao].realocado = false;
+
         if(controle[returnedHash].livre == true){   //Se nova posicao é livre, insere
             table[returnedHash] = buffer;
             controle[returnedHash].livre = false;   //Muda os status
@@ -190,9 +227,31 @@ void Dictionary::realocaPosicao(int posicao, std::vector <STATUS>& controle){
             while(controle[returnedHash].realocado == true){
                 returnedHash = ( hash1(buffer.word) + (j * hash2(buffer.word)) ) % maxSize;
                 j++;
+
             }
+
+
             realocaPosicao(returnedHash,controle);  //Realoca posição achada(pode estar ocupada ou livre)
             realocaPosicao(posicao, controle);      //Tenta inserir na posicao dada novamente
+        }
+    }
+}
+
+void Dictionary::reHash(){
+    int newSize;
+    std::vector <wordData> temp;
+    temp.resize(maxSize);
+    temp = table;
+
+    newSize = maxSize + EXTRASIZE;
+    newSize = nextPrime(newSize);
+
+    setMaxSize(newSize);
+    table.clear();
+
+    for(int i = 0; i < temp.size(); i++){
+        if(! temp[i].word.empty()){
+            insertWord(temp[i]);
         }
     }
 }

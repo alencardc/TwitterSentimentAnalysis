@@ -59,6 +59,8 @@ private:
     //Re-hash funcion
     void resizeDictionary();
 
+    void reHash();
+
 public:
     //Default constructor for dictionary
     Dictionary();

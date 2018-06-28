@@ -16,7 +16,7 @@ typedef struct sTweet {
 
 
 //Removes the ponctuacion of the given string
-utf8_string cleanTweet(utf8_string toClean);
+utf8_string cleanTweet(std::string toClean);
 
 //Returns a vector containing all the stopwords to be removed from the tweets
 std::vector<utf8_string> createBlacklist(std::string archiveName);
