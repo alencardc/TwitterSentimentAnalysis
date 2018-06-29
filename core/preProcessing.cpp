@@ -116,6 +116,48 @@ bool CSVtoDictionary(Dictionary &dictionary, std::string fileName) {
     while (file.eof() == false) {
         tweet = readTweet(file);
         insertTweet(dictionary, tweet);
+        j++;
     }
     return 1;
+}
+
+std::vector <utf8_string> splitTweet(Tweet toSplit){
+    std::vector <utf8_string> words;
+    std::string buffer;
+    std::string wordExtracted;
+    buffer = toSplit.text.c_str();
+
+    buffer = utf8Lowercase(buffer);
+    buffer = cleanTweet(buffer);
+
+    std::istringstream tweetStream(buffer);
+
+    while (getline(tweetStream, wordExtracted, ' ')) {
+        words.push_back(utf8_string(wordExtracted));
+    }
+
+    return words;
+}
+
+int classifyTweet(Tweet toClassify, Dictionary dictionary){
+    std::vector <utf8_string> words;
+    wordData dataRetrieved;
+    float polarity = 0.0;
+
+    words = splitTweet(toClassify);
+
+    for(int i = 0; i < words.size(); i++){
+        dataRetrieved = dictionary.retrieveWordData(words[i]);
+        polarity += dataRetrieved.weight;
+    }
+
+    if(polarity > 0.1){
+        return 1;
+    }
+    else if(polarity < -0.1){
+        return -1;
+    }
+    else{
+        return 0;
+    }
 }

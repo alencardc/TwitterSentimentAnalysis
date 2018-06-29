@@ -6,8 +6,8 @@
 #define SEED2 3
 #define MAXLENGHT 8
 #define TAXAMAXIMA 0.667
-#define EXTRASIZE 100
-#define INITSIZE 2000
+#define EXTRASIZE 150
+#define INITSIZE 200
 
 //Constructor for dictionary
 Dictionary::Dictionary() {
@@ -17,7 +17,7 @@ Dictionary::Dictionary() {
 }
 
 //Acumulação polinomial
-int Dictionary::hash1 (utf8_string key) {
+unsigned int Dictionary::hash1 (utf8_string key) {
     unsigned int hashValue = 0;
 
     for(int i = 0; i < key.size() && i < MAXLENGHT; i++) {
@@ -29,7 +29,7 @@ int Dictionary::hash1 (utf8_string key) {
 
 }
 
-int Dictionary::hash2 (utf8_string key) {
+unsigned int Dictionary::hash2 (utf8_string key) {
     unsigned int hashValue = 0;
 
     for(int i = 0; i < key.size() && i < MAXLENGHT; i++) {
@@ -254,21 +254,28 @@ void Dictionary::realocaPosicao(int posicao, std::vector <STATUS>& controle){
 }
 
 void Dictionary::reHash(){
-    int newSize, j, key, firstKey,secondKey;
+    int newSize, j;
+    unsigned int key, firstKey, secondKey;
+    wordData clean;
     std::vector <wordData> temp;
-    temp.resize(maxSize);
+
     temp = table;
 
     newSize = maxSize + EXTRASIZE;
     newSize = nextPrime(newSize);
+    setMaxSize(newSize);
 
-    //Limpa tabela
-    table.clear();
-    setMaxSize(newSize);    //Redimensiona tabela para caber o novo tamanho
+    for(int i = 0; i < table.size(); i++){
+        table[i].word = utf8_string("");
+        table[i].score = 0;
+        table[i].weight = 0;
+        table[i].occurrences = 0;
+    }
 
     //Percorre o vetor temporário
     for(int i = 0; i < temp.size(); i++){
         if(temp[i].occurrences > 0){    //Caso seja algum registro
+
             j = 0;
             //Recalcula hash
             firstKey = hash1(temp[i].word);
@@ -277,10 +284,13 @@ void Dictionary::reHash(){
              do {
                 key = (firstKey + j * secondKey) % maxSize;
                 j++;
+
             }while (isEmpty(key) == false);
             //Tabela recebe aquele registro na entrada calculada pela nova função de hash
-            table[key] = temp[i];
-        }
 
+            table[key] = temp[i];
+
+        }
     }
+
 }

@@ -33,10 +33,10 @@ private:
     int currentSize;
     std::vector <wordData> table;   //Table that stores the registers
 
-private:
+public:
     //HASH E NÃO HUSH HUSH HUSH(pussycat dools) [Generates the place to where the word belongs]
-    int hash1(utf8_string key);
-    int hash2 (utf8_string key);
+    unsigned int hash1(utf8_string key);
+    unsigned int hash2 (utf8_string key);
 
     //Change the size of the dictionary (maxsize), will be used in rehash
     void setMaxSize(int newSize);
@@ -73,6 +73,12 @@ public:
 
     //Returns hash key for a given word
     int find(utf8_string word);
+
+    void printDictionary(){
+        for(int i = 0; i < table.size(); i++){
+            std::cout << table[i].occurrences <<std::endl;
+        }
+    }
 
 };
 

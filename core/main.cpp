@@ -8,16 +8,27 @@ int main () {
     Dictionary dictionary;
     wordData word;
     Tweet tweet;
+    std::vector<utf8_string> words;
+    std::vector <wordData> temp;
+    std::ifstream file;
 
-    CSVtoDictionary(dictionary, "pt.csv");
 
-    word = dictionary.retrieveWordData("hoje");
+    CSVtoDictionary(dictionary,"pt.csv");
 
-    std::cout << std::endl;
+    file.open("pt.csv");
 
-    std::cout << "Ocurrences: " << word.occurrences <<std::endl;
-    std::cout << "Score: " << word.score << std::endl;
-    std::cout << "Weight: " << word.weight << std::endl;
+
+    for(int i = 0; i < 20; i++){
+        tweet = readTweet(file);
+        std::cout <<  "Old polarity:" << tweet.polarity;
+        std::cout <<"|| New polarity: " <<classifyTweet(tweet,dictionary) << std::endl;
+    }
+
+
+
+
+
+    file.close();
 
 	return 0;
 }
