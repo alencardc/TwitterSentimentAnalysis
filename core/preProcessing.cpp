@@ -86,11 +86,12 @@ Tweet readTweet(std::ifstream &file) {
 
 wordData createWord(std::string word, int polarity) {
     wordData newWord;
+
     newWord.word        = utf8_string(word);
     //Need changes
-    newWord.weight      = polarity;
-    newWord.occurrences = polarity;
-    newWord.score       = polarity;
+    newWord.weight      = (float)polarity;  //Weight começa com a polaridade
+    newWord.occurrences = 1;                //Número de ocorrências como o padrão
+    newWord.score       = polarity;         //Score da palavra começa com a polaridade
 
     return newWord;
 }

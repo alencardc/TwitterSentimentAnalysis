@@ -5,9 +5,9 @@
 #define SEED 7
 #define SEED2 3
 #define MAXLENGHT 8
-#define TAXAMAXIMA 0.5
-#define EXTRASIZE 10
-#define INITSIZE 10
+#define TAXAMAXIMA 0.667
+#define EXTRASIZE 100
+#define INITSIZE 2000
 
 //Constructor for dictionary
 Dictionary::Dictionary() {
@@ -57,20 +57,34 @@ int Dictionary::insertWord(wordData newWord) {
     if(currentSize > maxSize) {
         setMaxSize(currentSize);
     }
+
     */
-    currentSize++;
-    // Get an empty position in the table
-    if(needReHash()){
-        reHash();
+
+    if((key = find(newWord.word)) != -1){   //Se achou a palavra, apenas a atualiza
+        table[key].occurrences++;
+        table[key].score += newWord.score;
+        table[key].weight = (float) table[key].score / (float)table[key].occurrences;
+        return key;
     }
 
-    do {
-        key = (firstKey + j * secondKey) % maxSize;
-        j++;
-    } while (isEmpty(key) == false);
+    else{
+        key = 0;
+        currentSize++;
+        // Get an empty position in the table
+        if(needReHash()){
+            reHash();
+        }
 
-    table[key] = newWord;
-    return key;
+        do {
+            key = (firstKey + j * secondKey) % maxSize;
+            j++;
+        }while (isEmpty(key) == false);
+
+        table[key] = newWord;
+        return key;
+
+    }
+
 }
 //Retorna uma palavra
 wordData Dictionary::retrieveWordData(utf8_string word) {
@@ -78,6 +92,8 @@ wordData Dictionary::retrieveWordData(utf8_string word) {
     wordData emptyWord;
 
     key = find(word);
+
+
 
     if (key == -1)  //If word given isnt in the table return a empty struct
         return emptyWord;
@@ -238,7 +254,7 @@ void Dictionary::realocaPosicao(int posicao, std::vector <STATUS>& controle){
 }
 
 void Dictionary::reHash(){
-    int newSize;
+    int newSize, j, key, firstKey,secondKey;
     std::vector <wordData> temp;
     temp.resize(maxSize);
     temp = table;
@@ -246,12 +262,25 @@ void Dictionary::reHash(){
     newSize = maxSize + EXTRASIZE;
     newSize = nextPrime(newSize);
 
-    setMaxSize(newSize);
+    //Limpa tabela
     table.clear();
+    setMaxSize(newSize);    //Redimensiona tabela para caber o novo tamanho
 
+    //Percorre o vetor temporário
     for(int i = 0; i < temp.size(); i++){
-        if(! temp[i].word.empty()){
-            insertWord(temp[i]);
+        if(temp[i].occurrences > 0){    //Caso seja algum registro
+            j = 0;
+            //Recalcula hash
+            firstKey = hash1(temp[i].word);
+            secondKey = hash2(temp[i].word);
+
+             do {
+                key = (firstKey + j * secondKey) % maxSize;
+                j++;
+            }while (isEmpty(key) == false);
+            //Tabela recebe aquele registro na entrada calculada pela nova função de hash
+            table[key] = temp[i];
         }
+
     }
 }
