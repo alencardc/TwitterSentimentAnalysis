@@ -41,3 +41,9 @@ void insertTweet(Dictionary &dictionary, Tweet tweet);
 wordData createWord(std::string word, int polarity);
 
 std::string utf8Lowercase(std::string text);
+
+//Classify a given tweet based on the words contained in it
+int classifyTweet(Tweet toClassify, Dictionary dictionary);
+
+//Returns a vector containing the words in the given tweet.
+std::vector <utf8_string> splitTweet(Tweet toSplit);
