@@ -183,7 +183,7 @@ void classifyTweets(std::string fileName, Dictionary dictionary){
     while(input.eof() == false){
         fetched = fetchTweet(input);
         fetched.polarity = classifyTweet(fetched,dictionary);
-        output << fetched.text.c_str() << "," << fetched.polarity << "\n";
+        output << fetched.text.c_str() << ";" << fetched.polarity << "\n";
 
     }
 
