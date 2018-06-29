@@ -2,7 +2,7 @@
 
 std::string cleanTweet(std::string toClean){
     //Falta adicionar algumas pontuacoes
-    std::vector <unsigned char> pontuacao = {'~', '-', '\'', ';', '"', '(', ')', '^', '=', '+', ']', '.', '/', '#' , '@', '*', '$', '!', '?', ':', '['};
+    std::vector <unsigned char> pontuacao = {'~', '-', '_', '/', '\\', ';', ':', '"', '\'', '(', ')', '[', ']', '{', '}', '^', '=', '+', '-', '.', '#' , '@', '*', '$', '&', '%', '|', '!', '?'};
 
     std::string outputString;
     int indice, i = 0;
