@@ -161,3 +161,34 @@ int classifyTweet(Tweet toClassify, Dictionary dictionary){
         return 0;
     }
 }
+
+Tweet fetchTweet(std::ifstream &file){
+    Tweet toBePreviewed;
+    std::string fetchedTweet;
+
+    getline(file,fetchedTweet);
+    toBePreviewed.text = utf8_string(fetchedTweet);
+
+    return toBePreviewed;
+}
+
+void classifyTweets(std::string fileName, Dictionary dictionary){
+    std::ofstream output;
+    std::ifstream input;
+    Tweet fetched;
+
+    input.open(fileName);
+    output.open("output.csv");
+
+    while(input.eof() == false){
+        fetched = fetchTweet(input);
+        fetched.polarity = classifyTweet(fetched,dictionary);
+        output << fetched.text.c_str() << "," << fetched.polarity << "\n";
+
+    }
+
+    input.close();
+    output.close();
+
+}
+

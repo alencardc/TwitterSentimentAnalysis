@@ -47,3 +47,10 @@ int classifyTweet(Tweet toClassify, Dictionary dictionary);
 
 //Returns a vector containing the words in the given tweet.
 std::vector <utf8_string> splitTweet(Tweet toSplit);
+
+//Fetch a tweet from the file of tweets to be previewed
+Tweet fetchTweet(std::ifstream &file);
+
+//Classify the tweets presents in the given filename based on the data presented on dictionary, and then records the result in
+//output.csv
+void classifyTweets(std::string fileName, Dictionary dictionary);
