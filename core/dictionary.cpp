@@ -41,7 +41,7 @@ unsigned int Dictionary::hash2 (utf8_string key) {
 //CHanges max size
 void Dictionary::setMaxSize(int newSize) {
     maxSize = newSize;
-    table.resize(newSize);
+    table.resize(newSize, wordData());
 }
 
 //Insere uma palavra
@@ -50,16 +50,7 @@ int Dictionary::insertWord(wordData newWord) {
     unsigned int firstKey  = hash1(newWord.word);
     unsigned int secondKey = hash2(newWord.word);
     int j = 0;
-    /*
-    currentSize++;
-    //N�o vai ser necess�rio quando fizermos a fun��o de re-hash, basta fazer o teste se é necessario
-    //e coloca-la aqui
-    if(currentSize > maxSize) {
-        setMaxSize(currentSize);
-    }
-
-    */
-
+    
     if((key = find(newWord.word)) != -1){   //Se achou a palavra, apenas a atualiza
         table[key].occurrences++;
         table[key].score += newWord.score;
@@ -92,8 +83,6 @@ wordData Dictionary::retrieveWordData(utf8_string word) {
     wordData emptyWord;
 
     key = find(word);
-
-
 
     if (key == -1)  //If word given isnt in the table return a empty struct
         return emptyWord;
@@ -256,7 +245,6 @@ void Dictionary::realocaPosicao(int posicao, std::vector <STATUS>& controle){
 void Dictionary::reHash(){
     int newSize, j;
     unsigned int key, firstKey, secondKey;
-    wordData clean;
     std::vector <wordData> temp;
 
     temp = table;
@@ -265,12 +253,14 @@ void Dictionary::reHash(){
     newSize = nextPrime(newSize);
     setMaxSize(newSize);
 
-    for(int i = 0; i < table.size(); i++){
+    table.clear();
+    table.resize(newSize, wordData());
+    /*(int i = 0; i < table.size(); i++){
         table[i].word = utf8_string("");
         table[i].score = 0;
         table[i].weight = 0;
         table[i].occurrences = 0;
-    }
+    }*/
 
     //Percorre o vetor temporário
     for(int i = 0; i < temp.size(); i++){
