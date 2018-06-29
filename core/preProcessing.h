@@ -6,7 +6,11 @@
 #include "tinyutf8.h"
 #include <sstream>
 #include <cstdio>
+#include <iterator>
 #include "dictionary.h"
+
+#define UTF_firstUPPER 128
+#define UTF_lastUPPER 159
 
 typedef struct sTweet {
     int polarity;
@@ -16,7 +20,7 @@ typedef struct sTweet {
 
 
 //Removes the ponctuacion of the given string
-utf8_string cleanTweet(std::string toClean);
+std::string cleanTweet(std::string toClean);
 
 //Returns a vector containing all the stopwords to be removed from the tweets
 std::vector<utf8_string> createBlacklist(std::string archiveName);
@@ -35,3 +39,5 @@ void insertTweet(Dictionary &dictionary, Tweet tweet);
 
 //Create wordData struct
 wordData createWord(std::string word, int polarity);
+
+std::string utf8Lowercase(std::string text);

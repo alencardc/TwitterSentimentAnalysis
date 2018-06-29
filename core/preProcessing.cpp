@@ -1,27 +1,42 @@
 #include "preProcessing.h"
 
-utf8_string cleanTweet(std::string toClean){
-    std::vector <char> pontuacao = {'~', '-', ';', '"', ')', '^', '=', '+', ']', '.', '/', '#' , '@', '*', '$', 'º', '!', '?', ':', '['};
+std::string cleanTweet(std::string toClean){
+    //Falta adicionar algumas pontuacoes
+    std::vector <unsigned char> pontuacao = {'~', '-', '\'', ';', '"', '(', ')', '^', '=', '+', ']', '.', '/', '#' , '@', '*', '$', '!', '?', ':', '['};
 
-
+    std::string outputString;
     int indice, i = 0;
 
     //Percorre o vetor de pontuação, e procura esses caracteres na string para elimina-los
     do{
-        toClean.erase(std::remove(toClean.begin(), toClean.end(), pontuacao[i]), toClean.end());
-        /*while((indice = toClean.find(pontuacao[i])) != std::string::npos){
-            std::cout << toClean << std::endl;
-            std::cout << " i:" << indice << " " << toClean[indice] << std::endl;
-            system("pause");
-            toClean.erase(indice, indice);
-        }*/
-        i++;//usado para acessar novo caractere
+        while ( (indice = toClean.find(pontuacao[i])) != std::string::npos) {
+            toClean.replace(indice, 1, 1, ' ');
+        }
 
+        //toClean.erase(std::remove(toClean.begin(), toClean.end(), pontuacao[i]), toClean.end());
+        i++;//usado para acessar novo caractere
     }while(i < pontuacao.size());
 
-    return toClean; //Retorna utf8_string limpa
+    //Remover multiplos espacos
+    unique_copy (toClean.begin(), toClean.end(), std::back_insert_iterator<std::string>(outputString),
+                [](char a,char b){
+                    return isspace(a) && isspace(b);
+                });
+
+    return outputString; //Retorna utf8_string limpa
 }
 
+std::string utf8Lowercase(std::string text) {
+    // ISSUE: o char u acentuado esta dando problemas
+    for (int i = 0; i < text.size(); i++) {
+        if ( (text[i] >= 'A' && text[i]<= 'Z'))
+            text[i] = text[i] + 32;
+        else if ((unsigned char)text[i]>= UTF_firstUPPER && (unsigned char)text[i]<= UTF_lastUPPER/* && text[i-1] == 195*/)
+            text[i] = text[i] + 32;
+
+    }
+    return text;
+}
 
 //Retorna um vetor de strings(utf8), contendo a blacklist
 std::vector<utf8_string> createBlacklist(std::string archiveName) {
@@ -51,8 +66,9 @@ Tweet createTweet(std::string line) {
     Tweet newTweet;
 
     getline(lineStream, temp, ',');
-    newTweet.text = utf8_string(cleanTweet(temp));
-    std::cout << newTweet.text.c_str() << std::endl;
+    //temp = utf8Lowercase(cleanTweet(temp));
+    temp = cleanTweet(utf8Lowercase(temp));
+    newTweet.text = utf8_string(temp);
     getline(lineStream, temp, ',');
     newTweet.polarity = std::atoi(temp.c_str());
 
@@ -87,7 +103,6 @@ void insertTweet(Dictionary &dictionary, Tweet tweet) {
     while (getline(tweetStream, buffWord, ' ')) {
         word = createWord(buffWord, tweet.polarity);
         dictionary.insertWord(word);
-        //std::cout << word.word.c_str() << std::endl;
     }
 }
 
