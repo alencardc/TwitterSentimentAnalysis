@@ -103,7 +103,7 @@ void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet) {
     std::istringstream tweetStream(tweet.text.c_str());
     while (getline(tweetStream, buffWord, ' ')) {
         word = createWord(buffWord, tweet.polarity);
-        //inserirTrie(trie, word.word.c_str(), 1000);
+        inserirTrie(trie, word.word.c_str(), 1000);
         dictionary.insertWord(word);
     }
 }
