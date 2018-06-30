@@ -4,7 +4,7 @@ Nodo* inicializarTrie(void) {
     int i;
     Nodo *nNodo = new Nodo;
 
-    nodo.isWord = false;
+    nNodo->isWord = false;
 
     for (i = 0; i < R_MAX; i++)
         nNodo->prox[i] = NULL;
@@ -21,8 +21,8 @@ Nodo* inserirTrie(Nodo *a, std::string chave, unsigned int endTweet, int d) {
         a = inicializarTrie();
 
     if (d == chave.size()) {
-        nodo.endTweets = endTweet;
-        nodo.isWord = true;
+        a->endTweets.push_back(endTweet);
+        a->isWord = true;
         return a;
     }
 
@@ -32,15 +32,16 @@ Nodo* inserirTrie(Nodo *a, std::string chave, unsigned int endTweet, int d) {
 }
 
 bool contemTrie(Nodo *raiz, std::string chave) {
-    return (buscarTrie(raiz, chave) > 0); // Para esse caso, o campo valor eh  numero de vezes que a palavra foi inserida, logo se for 0, nunca foi inserido
+    return (buscarTrie(raiz, chave).size() > 0); // Para esse caso, o campo valor eh  numero de vezes que a palavra foi inserida, logo se for 0, nunca foi inserido
 }
 
-int buscarTrie(Nodo *raiz, std::string chave) {
+std::vector<unsigned int> buscarTrie(Nodo *raiz, std::string chave) {
     Nodo *a = new Nodo;
+    std::vector <unsigned int> empty;
     a = buscarTrie(raiz, chave, 0);
     if (a == NULL)
-        return 0; // Para esse caso, o campo valor eh  numero de vezes que a palavra foi inserida, logo se for 0, nunca foi inserido
-    return a->valor;
+        return empty; // Para esse caso, o campo valor eh  numero de vezes que a palavra foi inserida, logo se for 0, nunca foi inserido
+    return a->endTweets;
 }
 
 Nodo *buscarTrie(Nodo *a, std::string chave, int d) {
@@ -51,12 +52,12 @@ Nodo *buscarTrie(Nodo *a, std::string chave, int d) {
     char c = chave.at(d);
     return buscarTrie(a->prox[c - OFFSET_A], chave, d+1);
 }
-
+/*
 void todasPalavrasTrie(Nodo *a, std::string& palavra) {
     char proxChar;
     Nodo *filho;
 
-    if (a->valor > 0) //eh palavra
+    if (a->isWord) //eh palavra
         std::cout << palavra << "," << a->valor << "\n";
 
     for (int i = 0; i < R_MAX; i++) {
@@ -69,12 +70,12 @@ void todasPalavrasTrie(Nodo *a, std::string& palavra) {
         }
     }
 }
-
+*/
 void getStartWith(std::string& prefix, Nodo *a, std::vector<std::string>& wordList) {
     char proxChar;
     Nodo *filho;
     //Prefix contem, inicialmente, o prefixo procurado, o restante da palavra eh acumulado
-    if (a->valor > 0) //eh palavra
+    if (a->isWord) //eh palavra
         wordList.push_back(prefix);
 
     for (int i = 0; i < R_MAX; i++) {
@@ -87,7 +88,7 @@ void getStartWith(std::string& prefix, Nodo *a, std::vector<std::string>& wordLi
         }
     }
 }
-
+/*
 void salvarTrieCSV(Nodo *a) {
     std::string buffPalavra;
     std::ofstream arq;
@@ -95,13 +96,13 @@ void salvarTrieCSV(Nodo *a) {
     salvarTrieCSV(a, buffPalavra, arq);
     arq.close();
 }
-
+/*
 void salvarTrieCSV(Nodo *a, std::string& palavra, std::ofstream &arq) {
     char proxChar;
     Nodo *filho;
 
-    if (a->valor > 0) //eh palavra
-        arq << palavra << "," << a->valor << "\n";
+    if (a->isWord) //eh palavra
+
 
     for (int i = 0; i < R_MAX; i++) {
         proxChar = OFFSET_A + i;
@@ -113,7 +114,7 @@ void salvarTrieCSV(Nodo *a, std::string& palavra, std::ofstream &arq) {
         }
     }
 }
-
+*/
 std::vector<std::string> searchPrefix(Nodo *raiz, std::string prefix) {
     std::vector<std::string> wordList;
     int i = 0;
