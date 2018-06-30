@@ -12,21 +12,22 @@ Nodo* inicializarTrie(void) {
     return nNodo;
 }
 
-Nodo* inserirTrie(Nodo *raiz, std::string chave) {
-    return inserirTrie(raiz, chave, 0);
+Nodo* inserirTrie(Nodo *raiz, std::string chave, unsigned int endTweet) {
+    return inserirTrie(raiz, chave, endTweet, 0);
 }
 
-Nodo* inserirTrie(Nodo *a, std::string chave, int d) {
+Nodo* inserirTrie(Nodo *a, std::string chave, unsigned int endTweet, int d) {
     if (a == NULL)
         a = inicializarTrie();
 
     if (d == chave.size()) {
+        nodo.endTweets = endTweet;
         nodo.isWord = true;
         return a;
     }
 
     int c = (int)chave.at(d);
-    a->prox[c - OFFSET_A] = inserirTrie(a->prox[c - OFFSET_A], chave, d+1);
+    a->prox[c - OFFSET_A] = inserirTrie(a->prox[c - OFFSET_A], chave, endTweet, d+1);
     return a;
 }
 

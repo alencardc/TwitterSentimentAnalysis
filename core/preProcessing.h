@@ -7,8 +7,8 @@
 #include <sstream>
 #include <cstdio>
 #include <iterator>
-#include "Rtrie.h"
 #include "dictionary.h"
+#include "Rtrie.h"
 
 #define UTF_firstUPPER 128
 #define UTF_lastUPPER 159
@@ -33,10 +33,10 @@ Tweet readTweet(std::ifstream &file);
 Tweet createTweet(std::string line);
 
 //Insert all words of a CSV in the dictionary
-bool CSVtoDictionary (Dictionary &dictionary, std::string fileName);
+bool loadIndexCSV(Dictionary &dictionary, Nodo *trie, std::string fileName);
 
 //Insert words of a given tweet
-void insertTweet(Dictionary &dictionary, Tweet tweet);
+void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet);
 
 //Create wordData struct
 wordData createWord(std::string word, int polarity);

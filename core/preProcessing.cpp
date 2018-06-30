@@ -96,33 +96,33 @@ wordData createWord(std::string word, int polarity) {
     return newWord;
 }
 
-void insertTweet(Dictionary &dictionary, Tweet tweet) {
+void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet) {
     //transform(frase.begin(), frase.end(), frase.begin(), ::tolower);
     std::string buffWord;
     wordData word;
     std::istringstream tweetStream(tweet.text.c_str());
     while (getline(tweetStream, buffWord, ' ')) {
         word = createWord(buffWord, tweet.polarity);
+        //inserirTrie(trie, word.word.c_str(), 1000);
         dictionary.insertWord(word);
     }
 }
 
-bool CSVtoDictionary(Dictionary &dictionary, std::string fileName) {
+bool loadIndexCSV(Dictionary &dictionary, Nodo *trie, std::string fileName) {
     std::string buffTweet;
     Tweet tweet;
     std::ifstream file;
     file.open(fileName);
     int j = 0;
 
-    Nodo trie;
-    trie.inicializarTrie();
-
+    if (trie == NULL)
+        trie = inicializarTrie();
     while (file.eof() == false) {
         tweet = readTweet(file);
-        insertTweet(dictionary, tweet);
+        insertTweet(dictionary, trie, tweet);
         j++;
     }
-    return 1;
+    return true;
 }
 
 std::vector <utf8_string> splitTweet(Tweet toSplit){
