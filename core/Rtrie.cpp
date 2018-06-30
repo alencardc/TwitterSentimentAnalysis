@@ -49,7 +49,7 @@ Nodo *buscarTrie(Nodo *a, std::string chave, int d) {
         return NULL;
     if (d == chave.size())
         return a;
-    char c = chave.at(d);
+    int c = (int)chave.at(d);
     return buscarTrie(a->prox[c - OFFSET_A], chave, d+1);
 }
 /*

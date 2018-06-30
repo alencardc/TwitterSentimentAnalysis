@@ -15,8 +15,9 @@ int main() {
 
     loadIndexCSV(dictionary, trie,"pt.csv");
 
+    //std::cout << contemTrie(trie, "apple");;
 
-    classifyTweets("input.csv", dictionary);
+    //classifyTweets("input.csv", dictionary);
 
 	return 0;
 }

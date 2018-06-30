@@ -105,8 +105,7 @@ void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet, std::ofstream 
 
     newTweetOffset = tweetsArchive.tellp();
     while (getline(tweetStream, buffWord, ' ')) {
-
-
+        
         word = createWord(buffWord, tweet.polarity);
         inserirTrie(trie, word.word.c_str(), 1000);
         dictionary.insertWord(word);
