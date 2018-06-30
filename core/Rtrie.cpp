@@ -12,11 +12,11 @@ Nodo* inicializarTrie(void) {
     return nNodo;
 }
 
-Nodo* inserirTrie(Nodo *raiz, std::string chave, unsigned int endTweet) {
+Nodo* inserirTrie(Nodo *raiz, std::string chave, std::streampos endTweet) {
     return inserirTrie(raiz, chave, endTweet, 0);
 }
 
-Nodo* inserirTrie(Nodo *a, std::string chave, unsigned int endTweet, int d) {
+Nodo* inserirTrie(Nodo *a, std::string chave, std::streampos endTweet, int d) {
     if (a == NULL)
         a = inicializarTrie();
 
@@ -35,9 +35,9 @@ bool contemTrie(Nodo *raiz, std::string chave) {
     return (buscarTrie(raiz, chave).size() > 0); // Para esse caso, o campo valor eh  numero de vezes que a palavra foi inserida, logo se for 0, nunca foi inserido
 }
 
-std::vector<unsigned int> buscarTrie(Nodo *raiz, std::string chave) {
+std::vector<std::streampos> buscarTrie(Nodo *raiz, std::string chave) {
     Nodo *a = new Nodo;
-    std::vector <unsigned int> empty;
+    std::vector <std::streampos> empty;
     a = buscarTrie(raiz, chave, 0);
     if (a == NULL)
         return empty; // Para esse caso, o campo valor eh  numero de vezes que a palavra foi inserida, logo se for 0, nunca foi inserido
