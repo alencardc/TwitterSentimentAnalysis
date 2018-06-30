@@ -113,6 +113,10 @@ bool CSVtoDictionary(Dictionary &dictionary, std::string fileName) {
     std::ifstream file;
     file.open(fileName);
     int j = 0;
+
+    Nodo trie;
+    trie.inicializarTrie();
+
     while (file.eof() == false) {
         tweet = readTweet(file);
         insertTweet(dictionary, tweet);

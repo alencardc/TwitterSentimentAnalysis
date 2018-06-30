@@ -7,6 +7,7 @@
 #include <sstream>
 #include <cstdio>
 #include <iterator>
+#include "Rtrie.h"
 #include "dictionary.h"
 
 #define UTF_firstUPPER 128
