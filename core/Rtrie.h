@@ -8,20 +8,20 @@
 #define R_MAX 256 - OFFSET_A
 
 typedef struct sNodo {
-    std::vector<unsigned int> endTweets;
+    std::vector<std::streampos> endTweets;
     bool isWord;
     struct sNodo *prox[R_MAX-OFFSET_A];
 } Nodo;
 
 Nodo* inicializarTrie(void);
 
-Nodo* inserirTrie(Nodo *raiz, std::string chave, unsigned int endTweet);
-Nodo* inserirTrie(Nodo *a, std::string chave, unsigned int endTweet, int d);
+Nodo* inserirTrie(Nodo *raiz, std::string chave, std::streampos endTweet);
+Nodo* inserirTrie(Nodo *a, std::string chave, std::streampos endTweet, int d);
 
 bool contemTrie(Nodo *raiz, std::string chave);
 
 Nodo* buscarTrie(Nodo *raiz, std::string chave, int d);
-std::vector<unsigned int> buscarTrie(Nodo *raiz, std::string chave);
+std::vector<std::streampos> buscarTrie(Nodo *raiz, std::string chave);
 
 //void todasPalavrasTrie(Nodo *a, std::string& palavra);
 //void salvarTrieCSV(Nodo *a);
