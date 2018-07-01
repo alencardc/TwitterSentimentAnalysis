@@ -122,17 +122,19 @@ bool loadIndexCSV(Dictionary &dictionary, Nodo **trie, std::string fileName) {
     std::string buffTweet;
     Tweet tweet;
     std::streampos tweetOffset;
-    std::ifstream file;
     std::ofstream tweetsArchive;
+
+    std::ifstream file;
     file.open(fileName);
+    boomTheBOM(file);
+
     tweetsArchive.open("tweets.csv");
-
-
 
     int j = 0;
 
     if (*trie == NULL)
         *trie = inicializarTrie();
+
     while (file.eof() == false) {
         tweetOffset = tweetsArchive.tellp();
         tweet = readTweet(file,tweetsArchive);
@@ -215,3 +217,15 @@ void classifyTweets(std::string fileName, Dictionary dictionary){
 
 }
 
+//Funcao que vai checar se o arquivo UTF8 possui BOM no inicio, caso tenha, posiciona
+//ponteiro no bytes seguinte ao BOM
+void boomTheBOM(std::ifstream &file) {
+    char a,b,c;
+    //Pega os 3 primeiros bytes
+    a = file.get();
+    b = file.get();
+    c = file.get();
+    //Verifica se seguem o padrao do BOM, se nao seguir, volta pro inicio do arquivo
+    if(a!=(char)0xEF || b!=(char)0xBB || c!=(char)0xBF)
+        file.seekg(0);
+}
