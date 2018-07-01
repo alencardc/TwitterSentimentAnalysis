@@ -178,20 +178,23 @@ int classifyTweet(Tweet toClassify, Dictionary dictionary){
     wordData dataRetrieved;
     float polarity = 0.0;
 
+    //Divide o tweet em palavras
     words = splitTweet(toClassify);
 
+    //Acumula polaridade das palavras (se não foi encontrada a polaridade é 0.0 e não afeta o calculo).
     for(int i = 0; i < words.size(); i++){
         dataRetrieved = dictionary.retrieveWordData(words[i]);
         polarity += dataRetrieved.weight;
     }
 
+    //Tweet positivo
     if(polarity > 0.1){
         return 1;
     }
-    else if(polarity < -0.1){
+    else if(polarity < -0.1){   //Tweet negativo
         return -1;
     }
-    else{
+    else{   //Tweet neutro
         return 0;
     }
 }
@@ -200,6 +203,7 @@ Tweet fetchTweet(std::ifstream &file){
     Tweet toBePreviewed;
     std::string fetchedTweet;
 
+    //Le arquivo e preenche estrutura tweet com o texto. (a polaridade é preenchida depois).
     getline(file,fetchedTweet);
     toBePreviewed.text = utf8_string(fetchedTweet);
 
@@ -214,19 +218,22 @@ void classifyTweets(std::string fileName, Dictionary dictionary, std::string des
     input.open(fileName);
     output.open(destino);
 
+    //Verifica se input foi aberto
     if(!input.is_open()){
         std::cout << "Falha ao abrir o arquivo de tweets." << std::endl;
         return;
-
     }
+    //Verifica se output foi aberto
     else if (!output.is_open()){
         std::cout << "Falha ao abrir o arquivo de tweets polarizados." << std::endl;
         return;
     }
 
+    //Enquanto não chegou ao fim do arquivo
     while(input.eof() == false){
-        fetched = fetchTweet(input);
+        fetched = fetchTweet(input);    //Busca tweet e o classifica
         fetched.polarity = classifyTweet(fetched,dictionary);
+        //Escreve resultado no arquivo output.csv
         output << fetched.text.c_str() << ";" << fetched.polarity << "\n";
 
     }
@@ -261,11 +268,14 @@ void imprimeMenu(){
 }
 
 void printDerivativeWords(std::vector<std::string> wordsWith){
+    //Limpa a tela
     system("cls");
     std::cout << "Palavras encontradas:" << std::endl;
+    //Se o vetor de palavras está vazio, não foi encontrada nenhuma palavra
     if(wordsWith.size() == 0){
         std::cout << "Não foram encontradas palavras com este prefixo nos tweets." << std::endl;
     }
+    //Percorre vetor e imprime as palavras a partir daquele prefixo
     for(int i = 0; i < wordsWith.size(); i++){
         std::cout << i + 1 << "-" << wordsWith[i] << std::endl;
     }

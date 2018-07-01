@@ -14,9 +14,8 @@ int main() {
     std::vector<std::string> wordsWith;
     std::string fileName;
     std::string prefixo;
-    int dummy;
+
     Nodo *trie = NULL;
-    Nodo *buscado = NULL;
 
     loadIndexCSV(dictionary,&trie,"pt.csv");
 
