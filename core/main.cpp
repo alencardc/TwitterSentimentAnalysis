@@ -11,13 +11,13 @@ int main() {
     std::vector<utf8_string> words;
     std::vector <wordData> temp;
 
-    Nodo *trie;
+    Nodo *trie = NULL;
 
-    loadIndexCSV(dictionary, trie,"pt.csv");
+    loadIndexCSV(dictionary, &trie,"pt.csv");
 
-    //std::cout << contemTrie(trie, "apple");;
+    std::cout << contemTrie(trie, "carlosdlucka");
 
-    //classifyTweets("input.csv", dictionary);
+    classifyTweets("input.csv", dictionary);
 
 	return 0;
 }

@@ -5,12 +5,12 @@
 #include <vector>
 
 #define OFFSET_A 97
-#define R_MAX 256 - OFFSET_A
+#define R_MAX 256
 
 typedef struct sNodo {
     std::vector<std::streampos> endTweets;
     bool isWord;
-    struct sNodo *prox[R_MAX-OFFSET_A];
+    struct sNodo *prox[R_MAX];
 } Nodo;
 
 Nodo* inicializarTrie(void);

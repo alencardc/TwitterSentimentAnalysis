@@ -96,7 +96,7 @@ wordData createWord(std::string word, int polarity) {
     return newWord;
 }
 
-void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet, std::ofstream &tweetsArchive) {
+void insertTweet(Dictionary &dictionary, Nodo **trie, Tweet tweet, std::ofstream &tweetsArchive) {
     //transform(frase.begin(), frase.end(), frase.begin(), ::tolower);
     std::string buffWord;
     wordData word;
@@ -105,9 +105,10 @@ void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet, std::ofstream 
 
     newTweetOffset = tweetsArchive.tellp();
     while (getline(tweetStream, buffWord, ' ')) {
-        
         word = createWord(buffWord, tweet.polarity);
-        inserirTrie(trie, word.word.c_str(), 1000);
+
+        *trie = inserirTrie(*trie, word.word.c_str(), 1000);
+
         dictionary.insertWord(word);
     }
 
@@ -117,7 +118,7 @@ void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet, std::ofstream 
 
 }
 
-bool loadIndexCSV(Dictionary &dictionary, Nodo *trie, std::string fileName) {
+bool loadIndexCSV(Dictionary &dictionary, Nodo **trie, std::string fileName) {
     std::string buffTweet;
     Tweet tweet;
     std::ifstream file;
@@ -126,8 +127,8 @@ bool loadIndexCSV(Dictionary &dictionary, Nodo *trie, std::string fileName) {
     destino.open("tweets.csv");
     int j = 0;
 
-    if (trie == NULL)
-        trie = inicializarTrie();
+    if (*trie == NULL)
+        *trie = inicializarTrie();
     while (file.eof() == false) {
         tweet = readTweet(file);
         insertTweet(dictionary, trie, tweet, destino);

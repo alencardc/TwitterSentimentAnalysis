@@ -33,10 +33,10 @@ Tweet readTweet(std::ifstream &file);
 Tweet createTweet(std::string line);
 
 //Insert all words of a CSV in the dictionary
-bool loadIndexCSV(Dictionary &dictionary, Nodo *trie, std::string fileName);
+bool loadIndexCSV(Dictionary &dictionary, Nodo **trie, std::string fileName);
 
 //Insert words of a given tweet
-void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet, std::ofstream &tweetsArchive);
+void insertTweet(Dictionary &dictionary, Nodo **trie, Tweet tweet, std::ofstream &tweetsArchive);
 
 //Create wordData struct
 wordData createWord(std::string word, int polarity);

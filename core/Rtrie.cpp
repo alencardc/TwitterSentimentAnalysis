@@ -17,6 +17,7 @@ Nodo* inserirTrie(Nodo *raiz, std::string chave, std::streampos endTweet) {
 }
 
 Nodo* inserirTrie(Nodo *a, std::string chave, std::streampos endTweet, int d) {
+
     if (a == NULL)
         a = inicializarTrie();
 
@@ -26,8 +27,8 @@ Nodo* inserirTrie(Nodo *a, std::string chave, std::streampos endTweet, int d) {
         return a;
     }
 
-    int c = (int)chave.at(d);
-    a->prox[c - OFFSET_A] = inserirTrie(a->prox[c - OFFSET_A], chave, endTweet, d+1);
+    int c = (unsigned char)chave.at(d);
+    a->prox[c] = inserirTrie(a->prox[c], chave, endTweet, d+1);
     return a;
 }
 
@@ -49,8 +50,8 @@ Nodo *buscarTrie(Nodo *a, std::string chave, int d) {
         return NULL;
     if (d == chave.size())
         return a;
-    int c = (int)chave.at(d);
-    return buscarTrie(a->prox[c - OFFSET_A], chave, d+1);
+    int c = (unsigned char)chave.at(d);
+    return buscarTrie(a->prox[c], chave, d+1);
 }
 /*
 void todasPalavrasTrie(Nodo *a, std::string& palavra) {
