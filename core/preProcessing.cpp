@@ -77,7 +77,7 @@ Tweet createTweet(std::string line, std::ofstream &tweetsArchive){
     newTweet.polarity = std::atoi(temp.c_str());
 
     tweetsArchive << newTweet.polarity << "\n";
-
+    tweetsArchive.flush();
     return newTweet;
 
 }
@@ -228,4 +228,24 @@ void boomTheBOM(std::ifstream &file) {
     //Verifica se seguem o padrao do BOM, se nao seguir, volta pro inicio do arquivo
     if(a!=(char)0xEF || b!=(char)0xBB || c!=(char)0xBF)
         file.seekg(0);
+}
+
+void imprimeMenu(){
+    system("cls");
+    std::cout << "Opções:" << std::endl;
+    std::cout << "1 - Atualiza Dicionário" << std::endl;
+    std::cout << "2 - Classifica arquivo de tweets" << std::endl;
+    std::cout << "3 - Palavras com determinado prefixo" << std::endl;
+    std::cout << "4 - Encontra tweets com determinada palavra" <<std::endl;
+
+
+}
+
+void printDerivativeWords(std::vector<std::string> wordsWith){
+    system("cls");
+    std::cout << "Palavras encontradas:" << std::endl;
+    for(int i = 0; i < wordsWith.size(); i++){
+        std::cout << i + 1 << "-" << wordsWith[i] << std::endl;
+    }
+
 }

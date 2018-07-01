@@ -56,6 +56,11 @@ Tweet fetchTweet(std::ifstream &file);
 //output.csv
 void classifyTweets(std::string fileName, Dictionary dictionary);
 
-//Funcao que vai checar se o arquivo UTF8 possui BOM no inicio, caso tenha, posiciona 
-//ponteiro no bytes seguinte ao 
+//Funcao que vai checar se o arquivo UTF8 possui BOM no inicio, caso tenha, posiciona
+//ponteiro no bytes seguinte ao
 void boomTheBOM(std::ifstream &file);
+
+void imprimeMenu();
+
+void printDerivativeWords(std::vector<std::string> wordsWith);
+

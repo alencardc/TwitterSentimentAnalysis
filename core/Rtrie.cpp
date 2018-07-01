@@ -1,4 +1,5 @@
 #include "Rtrie.h"
+#include <iostream>
 
 Nodo* inicializarTrie(void) {
     int i;
@@ -128,5 +129,42 @@ std::vector<std::string> searchPrefix(Nodo *raiz, std::string prefix) {
     getStartWith(prefix, raiz, wordList);
     return wordList;
 }
+
+void searchForWord(std::string word, Nodo *trie){
+    std::vector <std::streampos> buscado;
+    std::ifstream tweetsArchive;
+    std::ofstream destino;
+    std::string tweet;
+    tweetsArchive.open("tweets.csv");
+
+
+
+
+    buscado = buscarTrie(trie, word);
+    word.append(".csv");
+    destino.open(word);
+
+
+    if(buscado.size() > 0){
+        for(int i = 0; i < buscado.size(); i++){
+            tweetsArchive.seekg(buscado[i]);
+            getline(tweetsArchive,tweet);
+            destino << tweet;
+            destino << "\n";
+        }
+
+        destino.close();
+        tweetsArchive.close();
+
+    }
+
+    else{
+        std::cout << "Erro ao abrir o arquivo de tweets";
+        destino.close();
+        tweetsArchive.close();
+    }
+
+}
+
 
 

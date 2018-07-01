@@ -31,3 +31,4 @@ void getStartWith(std::string& prefix, Nodo *a, std::vector<std::string>& wordLi
 
 std::vector<std::string> searchPrefix(Nodo *raiz, std::string prefix);
 
+void searchForWord(std::string word, Nodo *trie);
