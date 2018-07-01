@@ -80,7 +80,7 @@ void getStartWith(std::string& prefix, Nodo *a, std::vector<std::string>& wordLi
         wordList.push_back(prefix);
 
     for (int i = 0; i < R_MAX; i++) {
-        proxChar = OFFSET_A + i;
+        proxChar = i;
         filho = a->prox[i];
         if (filho) {
             prefix.push_back(proxChar);    //coloca caractere atual na string
@@ -120,8 +120,8 @@ std::vector<std::string> searchPrefix(Nodo *raiz, std::string prefix) {
     std::vector<std::string> wordList;
     int i = 0;
     std::string palavra;
-    while (i < prefix.size() && raiz->prox[prefix[i] - OFFSET_A] != NULL) {
-        raiz = raiz->prox[prefix[i] - OFFSET_A];
+    while (i < prefix.size() && raiz->prox[prefix[i]] != NULL) {
+        raiz = raiz->prox[prefix[i]];
         i++;
     }
 

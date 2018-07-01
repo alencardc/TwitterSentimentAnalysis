@@ -23,6 +23,8 @@ bool contemTrie(Nodo *raiz, std::string chave);
 Nodo* buscarTrie(Nodo *raiz, std::string chave, int d);
 std::vector<std::streampos> buscarTrie(Nodo *raiz, std::string chave);
 
+void getStartWith(std::string& prefix, Nodo *a, std::vector<std::string>& wordList);
+
 //void todasPalavrasTrie(Nodo *a, std::string& palavra);
 //void salvarTrieCSV(Nodo *a);
 //void salvarTrieCSV(Nodo *a, std::string& palavra, std::ofstream &arq);
