@@ -132,6 +132,13 @@ bool loadIndexCSV(Dictionary &dictionary, Nodo **trie, std::string fileName) {
 
     tweetsArchive.open("tweets.csv");
 
+    if(!file || !tweetsArchive){
+        std::cout << "Erro ao abrir arquivo." << std::endl;
+        return false;
+    }
+
+
+
     int j = 0;
 
     if (*trie == NULL)

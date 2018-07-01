@@ -8,7 +8,7 @@ int main() {
     Dictionary dictionary;
     wordData word;
     Tweet tweet;
-    int opcao;
+    int opcao = 1;
     std::vector<utf8_string> words;
     std::vector <wordData> temp;
     std::vector<std::string> wordsWith;
@@ -17,6 +17,8 @@ int main() {
     int dummy;
     Nodo *trie = NULL;
     Nodo *buscado = NULL;
+
+    loadIndexCSV(dictionary,&trie,"pt.csv");
 
 
     while(opcao != 0){
@@ -32,7 +34,7 @@ int main() {
                     break;
             case 2: std::cout << std::endl << "Nome do arquivo a ser classificado:";
                     std::cin >> fileName;
-                    classifyTweets(fileName,dictionary);
+                    classifyTweets(fileName,dictionary,"TweetsPolarizados.csv");
                     system("pause");
                     break;
             case 3: std::cout << std::endl << "Prefixo:";
