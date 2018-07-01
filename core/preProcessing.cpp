@@ -60,28 +60,34 @@ std::vector<utf8_string> createBlacklist(std::string archiveName) {
     }
 }
 
-Tweet createTweet(std::string line) {
+Tweet createTweet(std::string line, std::ofstream &tweetsArchive){
     std::istringstream lineStream(line);
     std::string temp;
     Tweet newTweet;
 
     getline(lineStream, temp, ',');
     //temp = utf8Lowercase(cleanTweet(temp));
+
+    //Salva o tweet no arquivo de tweets indexado pela trie
+    tweetsArchive << temp;
+    tweetsArchive << ";";
     temp = cleanTweet(utf8Lowercase(temp));
     newTweet.text = utf8_string(temp);
     getline(lineStream, temp, ',');
     newTweet.polarity = std::atoi(temp.c_str());
 
+    tweetsArchive << newTweet.polarity << "\n";
+
     return newTweet;
 
 }
 
-Tweet readTweet(std::ifstream &file) {
+Tweet readTweet(std::ifstream &file,std::ofstream &tweetsArchive) {
     std::string line;
 
     std::getline(file,line);
 
-    return createTweet(line);
+    return createTweet(line, tweetsArchive);
 }
 
 wordData createWord(std::string word, int polarity) {
@@ -96,14 +102,12 @@ wordData createWord(std::string word, int polarity) {
     return newWord;
 }
 
-void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet, std::ofstream &tweetsArchive) {
+void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet, std::streampos tweetOffset) {
     //transform(frase.begin(), frase.end(), frase.begin(), ::tolower);
     std::string buffWord;
     wordData word;
-    std::streampos newTweetOffset;
     std::istringstream tweetStream(tweet.text.c_str());
 
-    newTweetOffset = tweetsArchive.tellp();
     while (getline(tweetStream, buffWord, ' ')) {
 
 
@@ -112,29 +116,30 @@ void insertTweet(Dictionary &dictionary, Nodo *trie, Tweet tweet, std::ofstream 
         dictionary.insertWord(word);
     }
 
-    tweetsArchive << tweet.text.c_str();
-    tweetsArchive << ";";
-    tweetsArchive << tweet.polarity << "\n";
-
 }
 
 bool loadIndexCSV(Dictionary &dictionary, Nodo *trie, std::string fileName) {
     std::string buffTweet;
     Tweet tweet;
+    std::streampos tweetOffset;
     std::ifstream file;
-    std::ofstream destino;
+    std::ofstream tweetsArchive;
     file.open(fileName);
-    destino.open("tweets.csv");
+    tweetsArchive.open("tweets.csv");
+
+
+
     int j = 0;
 
     if (trie == NULL)
         trie = inicializarTrie();
     while (file.eof() == false) {
-        tweet = readTweet(file);
-        insertTweet(dictionary, trie, tweet, destino);
-        j++;
+        tweetOffset = tweetsArchive.tellp();
+        tweet = readTweet(file,tweetsArchive);
+        insertTweet(dictionary, trie, tweet, tweetOffset);
     }
-    destino.close();
+
+    tweetsArchive.close();
     file.close();
     return true;
 }
