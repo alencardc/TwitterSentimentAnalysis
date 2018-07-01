@@ -130,7 +130,7 @@ bool loadIndexCSV(Dictionary &dictionary, Nodo **trie, std::string fileName) {
     file.open(fileName);
     boomTheBOM(file);
 
-    tweetsArchive.open("tweets.csv");
+    tweetsArchive.open("tweets.csv", std::ofstream::app);
 
     if(!file || !tweetsArchive){
         std::cout << "Erro ao abrir arquivo." << std::endl;
@@ -281,3 +281,4 @@ void printDerivativeWords(std::vector<std::string> wordsWith){
     }
 
 }
+

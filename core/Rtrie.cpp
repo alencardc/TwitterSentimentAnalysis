@@ -158,7 +158,7 @@ void searchForWord(std::string word, Nodo *trie){
             destino << "\n";
         }
 
-        std::cout << "Tweets registrados em" << word << ".csv" << std::endl;
+        std::cout << "Tweets registrados em " << word << std::endl;
         destino.close();
         tweetsArchive.close();
 

@@ -16,8 +16,9 @@ int main() {
     std::string prefixo;
 
     Nodo *trie = NULL;
-
+    remove("tweets.csv");
     loadIndexCSV(dictionary,&trie,"pt.csv");
+
 
 
     while(opcao != 0){
