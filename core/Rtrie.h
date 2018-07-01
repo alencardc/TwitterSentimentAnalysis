@@ -11,6 +11,10 @@ typedef struct sNodo {
     std::vector<std::streampos> endTweets;
     bool isWord;
     struct sNodo *prox[R_MAX];
+
+    sNodo():
+        isWord(false)
+    {}
 } Nodo;
 
 Nodo* inicializarTrie(void);
@@ -29,6 +33,6 @@ void getStartWith(std::string& prefix, Nodo *a, std::vector<std::string>& wordLi
 //void salvarTrieCSV(Nodo *a);
 //void salvarTrieCSV(Nodo *a, std::string& palavra, std::ofstream &arq);
 
-std::vector<std::string> searchPrefix(Nodo *raiz, std::string prefix);
+std::vector<std::string> searchPrefix(Nodo *raiz, std::string &prefix);
 
 void searchForWord(std::string word, Nodo *trie);

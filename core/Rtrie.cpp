@@ -117,14 +117,21 @@ void salvarTrieCSV(Nodo *a, std::string& palavra, std::ofstream &arq) {
     }
 }
 */
-std::vector<std::string> searchPrefix(Nodo *raiz, std::string prefix) {
+std::vector<std::string> searchPrefix(Nodo *raiz, std::string &prefix) {
     std::vector<std::string> wordList;
     int i = 0;
     std::string palavra;
+
+
     while (i < prefix.size() && raiz->prox[prefix[i]] != NULL) {
         raiz = raiz->prox[prefix[i]];
         i++;
     }
+
+    if(i < prefix.size()){
+        return wordList;
+    }
+
 
     getStartWith(prefix, raiz, wordList);
     return wordList;
@@ -136,8 +143,6 @@ void searchForWord(std::string word, Nodo *trie){
     std::ofstream destino;
     std::string tweet;
     tweetsArchive.open("tweets.csv");
-
-
 
 
     buscado = buscarTrie(trie, word);
@@ -153,13 +158,14 @@ void searchForWord(std::string word, Nodo *trie){
             destino << "\n";
         }
 
+        std::cout << "Tweets registrados em" << word << ".csv" << std::endl;
         destino.close();
         tweetsArchive.close();
 
     }
 
     else{
-        std::cout << "Erro ao abrir o arquivo de tweets";
+        std::cout << "Palavra não encontrada na trie.";
         destino.close();
         tweetsArchive.close();
     }

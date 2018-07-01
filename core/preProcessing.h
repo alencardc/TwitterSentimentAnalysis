@@ -44,17 +44,13 @@ wordData createWord(std::string word, int polarity);
 std::string utf8Lowercase(std::string text);
 
 //Classify a given tweet based on the words contained in it
-int classifyTweet(Tweet toClassify, Dictionary dictionary);
+void classifyTweets(std::string fileName, Dictionary dictionary, std::string destino);
 
 //Returns a vector containing the words in the given tweet.
 std::vector <utf8_string> splitTweet(Tweet toSplit);
 
 //Fetch a tweet from the file of tweets to be previewed
 Tweet fetchTweet(std::ifstream &file);
-
-//Classify the tweets presents in the given filename based on the data presented on dictionary, and then records the result in
-//output.csv
-void classifyTweets(std::string fileName, Dictionary dictionary);
 
 //Funcao que vai checar se o arquivo UTF8 possui BOM no inicio, caso tenha, posiciona
 //ponteiro no bytes seguinte ao

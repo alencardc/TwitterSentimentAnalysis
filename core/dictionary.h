@@ -74,11 +74,7 @@ public:
     //Returns hash key for a given word
     int find(utf8_string word);
 
-    void printDictionary(){
-        for(int i = 0; i < table.size(); i++){
-            std::cout << table[i].occurrences <<std::endl;
-        }
-    }
+
 
 };
 

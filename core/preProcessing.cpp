@@ -109,11 +109,13 @@ void insertTweet(Dictionary &dictionary, Nodo **trie, Tweet tweet, std::streampo
     std::istringstream tweetStream(tweet.text.c_str());
 
     while (getline(tweetStream, buffWord, ' ')) {
-        word = createWord(buffWord, tweet.polarity);
+        if(buffWord.size() > 2){
+            word = createWord(buffWord, tweet.polarity);
 
-        *trie = inserirTrie(*trie, word.word.c_str(), tweetOffset);
+            *trie = inserirTrie(*trie, word.word.c_str(), tweetOffset);
 
-        dictionary.insertWord(word);
+            dictionary.insertWord(word);
+        }
     }
 
 }
@@ -197,13 +199,23 @@ Tweet fetchTweet(std::ifstream &file){
     return toBePreviewed;
 }
 
-void classifyTweets(std::string fileName, Dictionary dictionary){
+void classifyTweets(std::string fileName, Dictionary dictionary, std::string destino){
     std::ofstream output;
     std::ifstream input;
     Tweet fetched;
 
     input.open(fileName);
-    output.open("output.csv");
+    output.open(destino);
+
+    if(!input.is_open()){
+        std::cout << "Falha ao abrir o arquivo de tweets." << std::endl;
+        return;
+
+    }
+    else if (!output.is_open()){
+        std::cout << "Falha ao abrir o arquivo de tweets polarizados." << std::endl;
+        return;
+    }
 
     while(input.eof() == false){
         fetched = fetchTweet(input);
@@ -244,6 +256,9 @@ void imprimeMenu(){
 void printDerivativeWords(std::vector<std::string> wordsWith){
     system("cls");
     std::cout << "Palavras encontradas:" << std::endl;
+    if(wordsWith.size() == 0){
+        std::cout << "Não foram encontradas palavras com este prefixo nos tweets." << std::endl;
+    }
     for(int i = 0; i < wordsWith.size(); i++){
         std::cout << i + 1 << "-" << wordsWith[i] << std::endl;
     }
