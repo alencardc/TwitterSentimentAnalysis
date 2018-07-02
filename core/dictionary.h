@@ -15,7 +15,7 @@ typedef struct wordData {
 
 } wordData;
 
-
+//Estrutura utilizada durante o processo de rehashing
 typedef struct status{
     bool ocupado;
     bool livre;
@@ -59,6 +59,7 @@ public:
     //Re-hash funcion
     void resizeDictionary();
 
+    //Realiza o processo de rehash quando necessario
     void reHash();
 
 public:
@@ -73,8 +74,6 @@ public:
 
     //Returns hash key for a given word
     int find(utf8_string word);
-
-
 
 };
 
