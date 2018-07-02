@@ -29,6 +29,7 @@ unsigned int Dictionary::hash1 (utf8_string key) {
 
 }
 
+//Funcao de hash secundaria
 unsigned int Dictionary::hash2 (utf8_string key) {
     unsigned int hashValue = 0;
 
@@ -66,7 +67,7 @@ int Dictionary::insertWord(wordData newWord) {
             reHash();
         }
 
-        do {
+        do {    //Busca posicao livre na tabela
             key = (firstKey + j * secondKey) % maxSize;
             j++;
         }while (isEmpty(key) == false);
@@ -114,8 +115,9 @@ int Dictionary::find(utf8_string word) {
     return key;
 }
 
+//Gera numeros primos
 bool Dictionary::isPrime(int number){
-        for (int div = 2; div < number; div++){
+        for (int div = 2; div < number; div++){ //Testa divisores
             if (!(number % div)){
                 return false;
             }
@@ -126,7 +128,7 @@ bool Dictionary::isPrime(int number){
 
 int Dictionary::nextPrime(int actualNumber){
     actualNumber++;
-    while(!isPrime(actualNumber)){
+    while(!isPrime(actualNumber)){ //Incrementa ate encontrar um primo
         actualNumber++;
     }
 
@@ -138,7 +140,7 @@ bool Dictionary::needReHash(){
 
     ocupacao = (float) currentSize / (float) maxSize;
 
-    if(ocupacao < TAXAMAXIMA){
+    if(ocupacao < TAXAMAXIMA){  //Caso a ocupacao tenha excedido o limite maximo
         return false;
     }
     else{
@@ -201,15 +203,7 @@ void Dictionary::realocaPosicao(int posicao, std::vector <STATUS>& controle){
         buffer = table[posicao];    //Pega wordData da posicao a ser realocada;
 
 
-
-
-
         returnedHash = hash1(buffer.word);  //Calcula nova posicao (incremento 0)
-
-
-
-
-
 
         controle[posicao].livre = true;     //libera posicao
         controle[posicao].ocupado = false;
@@ -249,8 +243,8 @@ void Dictionary::reHash(){
 
     temp = table;
 
-    newSize = maxSize + EXTRASIZE;
-    newSize = nextPrime(newSize);
+    newSize = maxSize + EXTRASIZE;  //Incrementa 
+    newSize = nextPrime(newSize);   // Busca valor primo seguinte
     setMaxSize(newSize);
 
     table.clear();
