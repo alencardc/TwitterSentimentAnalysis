@@ -76,6 +76,7 @@ Tweet createTweet(std::string line, std::ofstream &tweetsArchive){
     getline(lineStream, temp, ',');
     newTweet.polarity = std::atoi(temp.c_str());
 
+    //Insere \n e descarrega no arquivo as alterações
     tweetsArchive << newTweet.polarity << "\n";
     tweetsArchive.flush();
     return newTweet;
@@ -84,9 +85,9 @@ Tweet createTweet(std::string line, std::ofstream &tweetsArchive){
 
 Tweet readTweet(std::ifstream &file,std::ofstream &tweetsArchive) {
     std::string line;
-
+    //le uma linha do tweet
     std::getline(file,line);
-
+    //armazena informações na estrutura
     return createTweet(line, tweetsArchive);
 }
 
@@ -103,12 +104,13 @@ wordData createWord(std::string word, int polarity) {
 }
 
 void insertTweet(Dictionary &dictionary, Nodo **trie, Tweet tweet, std::streampos tweetOffset) {
-    //transform(frase.begin(), frase.end(), frase.begin(), ::tolower);
+    
     std::string buffWord;
-    wordData word;
-    std::istringstream tweetStream(tweet.text.c_str());
+    wordData word;  
+    std::istringstream tweetStream(tweet.text.c_str()); //Transforma em stream para usar getline e separar as palavras
 
     while (getline(tweetStream, buffWord, ' ')) {
+        //Se a palavra tem mais de 2 caracteres, insere na trie e no dicionario
         if(buffWord.size() > 2){
             word = createWord(buffWord, tweet.polarity);
 
@@ -131,45 +133,52 @@ bool loadIndexCSV(Dictionary &dictionary, Nodo **trie, std::string fileName) {
     boomTheBOM(file);
 
     tweetsArchive.open("tweets.csv", std::ofstream::app);
-
+    //Se todos os arquivos abriram corretamente
     if(!file || !tweetsArchive){
         std::cout << "Erro ao abrir arquivo." << std::endl;
         return false;
     }
 
-
+                                //O ponteiro usado na trie é sempre a posição atual de output nesse arquivo, pois todas as palavras
+                                //inseridas pertencem ao mesmo tweet, e ele é colocado na posição atual.
 
     int j = 0;
 
+    //Inicializa trie
     if (*trie == NULL)
         *trie = inicializarTrie();
 
+    //Enquanto a file de input não chegou ao fim
     while (file.eof() == false) {
-        tweetOffset = tweetsArchive.tellp();
-        tweet = readTweet(file,tweetsArchive);
-        insertTweet(dictionary, trie, tweet, tweetOffset);
+        tweetOffset = tweetsArchive.tellp();    //Calcula o deslocamento (ponteiro) do tweet atual a ser inserido no arquivo de dados
+        tweet = readTweet(file,tweetsArchive);  // le o tweet e preenche a estrutura
+        insertTweet(dictionary, trie, tweet, tweetOffset);  //Insere tweet na trie, dicionário e no arquivo de dados do programa
     }
 
+    //Fecha os arquivos
     tweetsArchive.close();
     file.close();
     return true;
 }
 
+
 std::vector <utf8_string> splitTweet(Tweet toSplit){
-    std::vector <utf8_string> words;
-    std::string buffer;
+    std::vector <utf8_string> words;    //Palavras presentes no tweet
+    std::string buffer;                 //buffer para limpar o tweet e para transformar para lowercase
     std::string wordExtracted;
-    buffer = toSplit.text.c_str();
+    buffer = toSplit.text.c_str();  //converte de utf8 para string
 
     buffer = utf8Lowercase(buffer);
     buffer = cleanTweet(buffer);
-
+    //transforma em stream para usar getline para separar o tweet em palavras
     std::istringstream tweetStream(buffer);
 
+    //Enquanto é possivel retirar uma palavra do tweet, insere ela na lista de palavras
     while (getline(tweetStream, wordExtracted, ' ')) {
         words.push_back(utf8_string(wordExtracted));
     }
 
+    //Retorna as palavras presentes no tweet
     return words;
 }
 
@@ -199,6 +208,7 @@ int classifyTweet(Tweet toClassify, Dictionary dictionary){
     }
 }
 
+//Le um tweet do arquivo de tweets a serem classificados
 Tweet fetchTweet(std::ifstream &file){
     Tweet toBePreviewed;
     std::string fetchedTweet;
@@ -262,7 +272,8 @@ void imprimeMenu(){
     std::cout << "1 - Atualiza Dicionário" << std::endl;
     std::cout << "2 - Classifica arquivo de tweets" << std::endl;
     std::cout << "3 - Palavras com determinado prefixo" << std::endl;
-    std::cout << "4 - Encontra tweets com determinada palavra" <<std::endl;
+    std::cout << "4 - Encontra tweets com determinada palavra" << std::endl;
+    std::cout << "0 - Sair" << std::endl;
 
 
 }

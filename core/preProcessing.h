@@ -10,6 +10,7 @@
 #include "dictionary.h"
 #include "Rtrie.h"
 
+//Usado para determinar se um caractere utf precisa ou não ser convertido para lowercase
 #define UTF_firstUPPER 128
 #define UTF_lastUPPER 159
 
@@ -41,6 +42,7 @@ void insertTweet(Dictionary &dictionary, Nodo **trie, Tweet tweet, std::streampo
 //Create wordData struct
 wordData createWord(std::string word, int polarity);
 
+//Returns a string with all the characters in lowercase
 std::string utf8Lowercase(std::string text);
 
 //Classify a given tweet based on the words contained in it
@@ -53,11 +55,13 @@ std::vector <utf8_string> splitTweet(Tweet toSplit);
 Tweet fetchTweet(std::ifstream &file);
 
 //Funcao que vai checar se o arquivo UTF8 possui BOM no inicio, caso tenha, posiciona
-//ponteiro no bytes seguinte ao
+//ponteiro no bytes seguinte ao mesmo
 void boomTheBOM(std::ifstream &file);
 
+//Imprime o menu da main
 void imprimeMenu();
 
+//Imprime todas as palavras de wordsWith, que contem todas as palavras derivadas de um mesmo prefixo presentes no dicionário
 void printDerivativeWords(std::vector<std::string> wordsWith);
 
 
